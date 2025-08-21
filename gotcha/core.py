@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup, soup
+from bs4 import BeautifulSoup
 import time
 from config import PLATFORMS, RATE_LIMIT_SECONDS
 

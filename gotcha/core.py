@@ -23,6 +23,7 @@ def social_scan(username: str, platforms: str) -> dict:
             results["platforms"][platform_name] = {"exists": False}
      
     return results
+
 def username_scan(username: str, platform_url: str) -> bool:
     """Checks if a username exists on a specific platform."""
     try:

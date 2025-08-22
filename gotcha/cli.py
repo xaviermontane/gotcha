@@ -1,3 +1,4 @@
+import os
 import typer
 from core import social_scan
 from pyfiglet import Figlet
@@ -16,7 +17,8 @@ def display_banner():
 def scan(
     username: Annotated[str, typer.Argument()], 
     platforms: Annotated[str, typer.Option("--platforms", "-p", help="Comma-separated list of platforms to scan (e.g., Twitter,Reddit)")] = "Instagram, Facebook, Twitter, Reddit, YouTube",
-    verbose: Annotated[bool, typer.Option("--verbose", "-v", help="Show all platforms (existing and non-existing)")] = False
+    verbose: Annotated[bool, typer.Option("--verbose", "-v", help="Show all platforms (existing and non-existing)")] = False,
+    output: Annotated[str | None, typer.Option("--output", "-o", help="Output file to save results (not implemented yet)")] = None
 ):
     """Scan a username across specified platforms."""
     # Display banner at start of scan
@@ -41,6 +43,17 @@ def scan(
         
         if non_existing_count > 0:
             typer.echo(f"\n{non_existing_count} platforms not found. Use --verbose to see all results.")
+
+    # Output results to file if specified
+    folder = "output"
+    os.makedirs(folder, exist_ok=True)
+    
+    if output:
+        with open(os.path.join(folder, output), "w") as f:
+            f.write(str(results))
+
+        typer.echo(f"Results saved to '{os.path.join(folder, output)}' successfully!")
+
 
 if __name__ == "__main__":
     app()

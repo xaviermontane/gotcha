@@ -8,17 +8,21 @@ def main():
 
 def social_scan(username: str, platforms: str) -> dict:
     """Scans a username across multiple platforms."""
-    requested = platforms.split(',')
+    requested = [p.strip() for p in platforms.split(',')]
     results = {"username": username, "platforms": {}}
-
-    for platform, url in PLATFORMS.items():
-        if platform in requested:
+     
+    # Scan ALL requested platforms, whether they exist in PLATFORMS or not
+    for platform_name in requested:
+        if platform_name in PLATFORMS:
+            url = PLATFORMS[platform_name]
             exists = username_scan(username, url)
-            results["platforms"][platform] = {"exists": exists}
-            time.sleep(RATE_LIMIT_SECONDS)  # Respect rate limits (adjust as needed)
-
+            results["platforms"][platform_name] = {"exists": exists}
+            time.sleep(RATE_LIMIT_SECONDS)
+        else:
+            # Platform not supported - mark as doesn't exist
+            results["platforms"][platform_name] = {"exists": False}
+     
     return results
-
 def username_scan(username: str, platform_url: str) -> bool:
     """Checks if a username exists on a specific platform."""
     try:

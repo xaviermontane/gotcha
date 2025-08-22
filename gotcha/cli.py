@@ -1,4 +1,5 @@
 import os
+import json
 import typer
 from core import social_scan
 from pyfiglet import Figlet
@@ -50,10 +51,9 @@ def scan(
     
     if output:
         with open(os.path.join(folder, output), "w") as f:
-            f.write(str(results))
+            json.dump(results, f, indent=4)
 
         typer.echo(f"Results saved to '{os.path.join(folder, output)}' successfully!")
-
 
 if __name__ == "__main__":
     app()

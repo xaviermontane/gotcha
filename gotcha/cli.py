@@ -46,14 +46,15 @@ def scan(
             typer.echo(f"\n{non_existing_count} platforms not found. Use --verbose to see all results.")
 
     # Output results to file if specified
-    folder = "output"
-    os.makedirs(folder, exist_ok=True)
-    
     if output:
-        with open(os.path.join(folder, output), "w") as f:
+        output_dir = os.path.join(os.path.dirname(__file__), "output")
+        os.makedirs(output_dir, exist_ok=True)
+        output_path = os.path.join(output_dir, output)
+        with open(output_path, "w") as f:
             json.dump(results, f, indent=4)
 
-        typer.echo(f"Results saved to '{os.path.join(folder, output)}' successfully!")
+        rel_path = os.path.relpath(output_path, os.path.dirname(__file__))
+        typer.echo(f"Results saved to '{rel_path}' successfully!")
 
 if __name__ == "__main__":
     app()
